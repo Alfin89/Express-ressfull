@@ -15,8 +15,10 @@
             <div class="card-body">
               <h5 class="card-title"><%= product.title %></h5>
               <p class="card-text"><%= product.description %></p>
+              <a href="/?category=<%= product.category %>" class="card-text"><%= product.category %></a><br>
               <a href="/" class="btn btn-primary">Semua Products</a>
               <a href="/product/<%= product.id %>/edit" class="btn btn-success">Edit</a>
+              <a class="btn btn-danger" href="/product/<%= product.id %>/delete">Delete</a>
             </div>
           </div>
     </div>

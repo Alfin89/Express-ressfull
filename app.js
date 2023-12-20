@@ -33,39 +33,55 @@ app.use(methodOverride('_method'))
 // .then(res => res.json())
 // .then(console.log);
             
-// Url
+// Url get data
 app.get('/', async (req, res) => {
-    const products = await Product.find({})
+    const { category } = req.query
+    if (category) {
+        const products = await Product.find({ category })
+        res.render('index', {products})
+    }
+    const products = await Product.find({ })
     res.render('index', {products})
 })
 
+// Url Create Product
 app.get('/product/create', async (req, res) => {
     res.render('create')
 })
 
+// Url Create Save Product
 app.post('/', async (req, res) => {
     const product = new Product(req.body)
     await product.save()
     res.redirect(`/product/${product.id}`)
 })
 
+// Viee Product ByID
 app.get('/product/:id', async (req, res) => {
     const { id } = req.params
     const product = await Product.findById(id)
     res.render('view', {product})
 })
-
+// Edit Product BYID
 app.get('/product/:id/edit', async (req, res) => {
     const { id } = req.params
     const product = await Product.findById(id)
     res.render('edit', {product})
 })
-
+// Save Product ByUpdate
 app.put('/product/:id', async (req, res) => {
     const { id } = req.params
     const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true })
     res.redirect(`/product/${product.id}`)
 })
+// Delete Product
+app.get('/product/:id/delete', async (req, res) => {
+    const { id } = req.params
+    await Product.findByIdAndDelete(id)
+    res.redirect('/')
+})
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running http://127.0.0.1:${PORT}`);
